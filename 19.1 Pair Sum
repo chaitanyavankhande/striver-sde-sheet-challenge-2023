@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+
+vector<vector<int>> pairSum(vector<int> &arr, int s){
+   // Write your code here.
+
+   unordered_map<int,int> freq;
+   vector<int>unique;
+
+   for(int i=0; i<arr.size(); i++) {
+      freq[arr[i]]++;
+      if(freq[arr[i]] == 1) {
+         unique.push_back(arr[i]);
+      }
+   }
+   sort(unique.begin(), unique.end());
+
+   int start = 0, end = unique.size()-1;
+   vector<vector<int>> pairs;
+   int sum;
+   while(start <= end) {
+      sum = unique[start] + unique[end];
+      if(sum == s) {
+         int count = 0;
+         if(unique[start] == unique[end]) {
+            count = freq[unique[start]] * (freq[unique[start]] - 1) / 2;
+         }
+         else {
+            count = freq[unique[start]] * freq[unique[end]];
+         }
+
+         for(int i=0; i<count; i++) {
+            pairs.push_back({unique[start], unique[end]});
+         }
+         start++;
+         end--;
+      }
+      else if(sum < s) {
+         start++;
+      }
+      else {
+         end--;
+      }
+   }
+   return pairs;
+}
